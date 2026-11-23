@@ -1,10 +1,10 @@
 import type React from 'react';
 
 type PopupProps = {
-  title?: string;
-  children: React.ReactNode;
   onClose: () => void;
+  title: string;
   isOpen: boolean;
+  children: React.ReactNode;
 };
 
 export default function Popup(props: PopupProps): React.JSX.Element {

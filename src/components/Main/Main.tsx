@@ -1,3 +1,4 @@
+import type React from 'react';
 import { useState } from 'react';
 import avatar from '../../images/avatar.jpg';
 import type { PopupConfig, CardData } from '../../types/types';
@@ -7,29 +8,59 @@ import EditProfile from './Popup/EditProfile/EditProfile';
 import EditAvatar from './Popup/EditAvatar/EditAvatar';
 import Card from './Card/Card';
 
-const cards: CardData[] = [
-    {
-      isLiked: false,
-      _id: '5d1f0611d321eb4bdcd707dd',
-      name: 'Yosemite Valley',
-      link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg',
-      owner: '5d1f0611d321eb4bdcd707dd',
-      createdAt: '2019-07-05T08:10:57.741Z',
-    },
-    {
-      isLiked: false,
-      _id: '5d1f064ed321eb4bdcd707de',
-      name: 'Lake Louise',
-      link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg',
-      owner: '5d1f0611d321eb4bdcd707dd',
-      createdAt: '2019-07-05T08:11:58.324Z',
-    },
-  ];
-
-  console.log(cards);
-
+const initialCards: CardData[] = [
+  {
+    isLiked: false,
+    _id: '5d1f0611d321eb4bdcd707dd',
+    name: 'Yosemite Valley',
+    link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg',
+    owner: '5d1f0611d321eb4bdcd707dd',
+    createdAt: '2019-07-05T08:10:57.741Z',
+  },
+  {
+    isLiked: false,
+    _id: '5d1f064ed321eb4bdcd707de',
+    name: 'Lake Louise',
+    link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg',
+    owner: '5d1f0611d321eb4bdcd707dd',
+    createdAt: '2019-07-05T08:11:58.324Z',
+  },
+  {
+    isLiked: false,
+    _id: '5d1f067e321eb4bdcd707df',
+    name: 'Montañas Calvas',
+    link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg',
+    owner: '5d1f0611d321eb4bdcd707dd',
+    createdAt: '2019-07-05T08:12:30.000Z',
+  },
+  {
+    isLiked: false,
+    _id: '5d1f06a9d321eb4bdcd707e0',
+    name: 'Latemar',
+    link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg',
+    owner: '5d1f0611d321eb4bdcd707dd',
+    createdAt: '2019-07-05T08:13:00.000Z',
+  },
+  {
+    isLiked: false,
+    _id: '5d1f06cfd321eb4bdcd707e1',
+    name: 'Parque Nacional de la Vanoise',
+    link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg',
+    owner: '5d1f0611d321eb4bdcd707dd',
+    createdAt: '2019-07-05T08:14:00.000Z',
+  },
+  {
+    isLiked: false,
+    _id: '5d1f06f4d321eb4bdcd707e2',
+    name: 'Lago di Braies',
+    link: 'https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg',
+    owner: '5d1f0611d321eb4bdcd707dd',
+    createdAt: '2019-07-05T08:15:00.000Z',
+  },
+];
 
 export default function Main(): React.JSX.Element {
+  const [cards, setCards] = useState<CardData[]>(initialCards);
   const [popup, setPopup] = useState<PopupConfig | null>(null);
 
   const newCardPopup: PopupConfig = {
@@ -53,6 +84,40 @@ export default function Main(): React.JSX.Element {
 
   function handleClosePopup(): void {
     setPopup(null);
+  }
+
+  function handleCardLike(cardId: string): void {
+    setCards((prevCards) =>
+      prevCards.map((item) =>
+        item._id === cardId ? { ...item, isLiked: !item.isLiked } : item
+      )
+    );
+  }
+
+  function handleConfirmDelete(cardId: string): void {
+    setCards((prevCards) => prevCards.filter((item) => item._id !== cardId));
+    handleClosePopup();
+  }
+
+  function handleCardDeleteClick(cardId: string): void {
+    const deleteConfirmPopup: PopupConfig = {
+      title: '¿Estás seguro/a?',
+      children: (
+        <form
+          className="popup__form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleConfirmDelete(cardId);
+          }}
+        >
+          <button className="button popup__button" type="submit">
+            Sí
+          </button>
+        </form>
+      ),
+    };
+
+    handleOpenPopup(deleteConfirmPopup);
   }
 
   return (
@@ -88,10 +153,17 @@ export default function Main(): React.JSX.Element {
           onClick={() => handleOpenPopup(newCardPopup)}
         />
       </section>
+
       <section className="cards page__section">
         <ul className="cards__list">
           {cards.map((card) => (
-            <Card key={card._id} card={card} />
+            <Card
+              key={card._id}
+              card={card}
+              handleOpenPopup={handleOpenPopup}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDeleteClick}
+            />
           ))}
         </ul>
       </section>
@@ -99,7 +171,7 @@ export default function Main(): React.JSX.Element {
       {popup && (
         <Popup
           onClose={handleClosePopup}
-          title={popup.title}
+          title={popup.title ?? ''}
           isOpen={popup !== null}
         >
           {popup.children}
