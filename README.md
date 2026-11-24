@@ -1,75 +1,81 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Around The U.S. (React + TypeScript)
 
-Currently, two official plugins are available:
+Aplicación web interactiva desarrollada con **React**, **TypeScript** y **Vite** para explorar tarjetas de lugares, gestionar el perfil de usuario y abrir ventanas modales (*popups*) con validación de formularios en tiempo real.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Enlaces del proyecto
 
-## React Compiler
+* **Repositorio en GitHub:** `https://github.com/akikosato81-maker/web_project_around_react.git` 
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Funcionalidades
 
-## Expanding the ESLint configuration
+* **Galería de tarjetas (`Card` y `Main`):**
+  * Renderizado dinámico de tarjetas iniciales con título, imagen y estado de "me gusta".
+  * Alternar estado activo/inactivo en el botón de "me gusta".
+  * Flujo de eliminación de tarjetas con modal de confirmación.
+* **Sistema de ventanas modales (`Popup`):**
+  * Apertura dinámica mediante configuración de título y contenido hijo (`PopupConfig`).
+  * Cierre desde el botón de cerrar, haciendo clic sobre el fondo oscuro (*overlay*) o presionando la tecla `Escape`.
+* **Formularios y validación:**
+  * **Editar perfil (`EditProfile`):** Validación de nombre (2 a 40 caracteres) y descripción/acerca de mí (2 a 200 caracteres), manejo de campos tocados (*touched*) y bloqueo del botón de envío hasta que el formulario sea válido.
+  * **Cambiar foto de perfil (`EditAvatar`):** Validación de URL con protocolo `http:` o `https:` y retroalimentación visual de errores.
+  * **Nuevo lugar (`NewCard`):** Validación de título (2 a 30 caracteres) y enlace de imagen (`http:` / `https:`) con control de envío.
+  * **Vista ampliada de imagen (`ImagePopup`):** Visualización de la fotografía seleccionada junto con su pie de foto.
+* **Estructura de página (`Header`, `Main`, `Footer`):**
+  * Encabezado con logotipo, sección principal con perfil y tarjetas, y pie de página con créditos.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Stack tecnológico
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+* **Lenguaje:** TypeScript
+* **Biblioteca UI:** React
+* **Empaquetador y servidor de desarrollo:** Vite
+* **Estilos:** CSS3 modular siguiendo la metodología **BEM**
+* **Calidad de código:** ESLint
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Estructura del proyecto
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
-```
+```text
+web_project_around_react/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── blocks/
+│   ├── components/
+│   │   ├── Footer/
+│   │   │   └── Footer.tsx
+│   │   ├── Header/
+│   │   │   └── Header.tsx
+│   │   ├── Main/
+│   │   │   ├── Card/
+│   │   │   │   └── Card.tsx
+│   │   │   ├── Popup/
+│   │   │   │   ├── EditAvatar/
+│   │   │   │   │   └── EditAvatar.tsx
+│   │   │   │   ├── EditProfile/
+│   │   │   │   │   └── EditProfile.tsx
+│   │   │   │   ├── ImagePopup/
+│   │   │   │   │   └── ImagePopup.tsx
+│   │   │   │   ├── NewCard/
+│   │   │   │   │   └── NewCard.tsx
+│   │   │   │   └── Popup.tsx
+│   │   │   └── Main.tsx
+│   │   └── App.tsx
+│   ├── images/
+│   ├── types/
+│   │   └── types.ts
+│   ├── vendor/
+│   │   └── fonts
+│   │   └── fonts.css
+│   │   └── normalize.css
+│   ├── index.css
+│   └── main.tsx
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package-lock.json
+├── package.json
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── vite.config.ts
+└── README.md
