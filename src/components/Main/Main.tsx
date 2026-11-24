@@ -100,25 +100,37 @@ export default function Main(): React.JSX.Element {
   }
 
   function handleCardDeleteClick(cardId: string): void {
+    function handleDeleteSubmit(event: React.FormEvent<HTMLFormElement>): void {
+      event.preventDefault();
+      handleConfirmDelete(cardId);
+    }
+
     const deleteConfirmPopup: PopupConfig = {
-      title: '¿Estás seguro/a?',
-      children: (
-        <form
-          className="popup__form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleConfirmDelete(cardId);
-          }}
-        >
-          <button className="button popup__button" type="submit">
-            Sí
-          </button>
-        </form>
-      ),
-    };
+        title: '¿Estás seguro/a?',
+        children: (
+          <form className="popup__form" onSubmit={handleDeleteSubmit}>
+            <button className="button popup__button" type="submit">
+              Sí
+            </button>
+          </form>
+        ),
+      };
 
     handleOpenPopup(deleteConfirmPopup);
   }
+
+  function handleAvatarClick(): void {
+    handleOpenPopup(editAvatarPopup);
+  }
+
+  function handleEditProfileClick(): void {
+    handleOpenPopup(editProfilePopup);
+  }
+
+  function handleAddCardClick(): void {
+    handleOpenPopup(newCardPopup);
+  }
+
 
   return (
     <main className="content">
@@ -133,7 +145,7 @@ export default function Main(): React.JSX.Element {
             className="profile__avatar-edit-button"
             type="button"
             aria-label="Editar avatar"
-            onClick={() => handleOpenPopup(editAvatarPopup)}
+            onClick={handleAvatarClick}
           />
         </div>
         <div className="profile__info">
@@ -142,7 +154,7 @@ export default function Main(): React.JSX.Element {
             aria-label="Editar perfil"
             className="profile__edit-button"
             type="button"
-            onClick={() => handleOpenPopup(editProfilePopup)}
+            onClick={handleEditProfileClick}
           />
           <p className="profile__description">Explorador</p>
         </div>
@@ -150,7 +162,7 @@ export default function Main(): React.JSX.Element {
           aria-label="Agregar tarjeta"
           className="profile__add-button"
           type="button"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={handleAddCardClick}
         />
       </section>
 
