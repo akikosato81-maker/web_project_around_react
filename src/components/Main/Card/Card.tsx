@@ -26,19 +26,31 @@ export default function Card({
     isLiked ? 'card__like-button_is-active' : ''
   }`.trim();
 
+  function handleImageClick(): void {
+    handleOpenPopup(imageComponent);
+  }
+
+  function handleLikeClick(): void {
+    onCardLike(_id);
+  }
+
+  function handleDeleteClick(): void {
+    onCardDelete(_id);
+  }
+
   return (
     <li className="card">
       <img
         className="card__image"
         src={link}
         alt={name}
-        onClick={() => handleOpenPopup(imageComponent)}
+        onClick={handleImageClick}
       />
       <button
         aria-label="Delete card"
         className="card__delete-button"
         type="button"
-        onClick={() => onCardDelete(_id)}
+        onClick={handleDeleteClick}
       />
       <div className="card__description">
         <h2 className="card__title">{name}</h2>
@@ -46,7 +58,7 @@ export default function Card({
           aria-label="Like card"
           type="button"
           className={likeButtonClassName}
-          onClick={() => onCardLike?.(_id)}
+          onClick={handleLikeClick}
         />
       </div>
     </li>
